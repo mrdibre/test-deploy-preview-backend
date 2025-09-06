@@ -10,7 +10,7 @@ RUN pnpm install --frozen-lockfile --prod
 
 COPY . .
 
-EXPOSE 3000
+EXPOSE 80
 
 USER node
 
