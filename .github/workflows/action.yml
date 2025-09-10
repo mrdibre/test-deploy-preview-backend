@@ -3,7 +3,7 @@ on:
     inputs:
       fe_branch:
         description: 'The FE branch name to deploy (e.g., pr-123)'
-        required: true
+        default: 'main'
 
 permissions:
   id-token: write
@@ -11,6 +11,8 @@ permissions:
 
 jobs:
   update-preview:
+    name: Update Vercel Preview for FE branch
+    runs-on: ubuntu-latest
     steps:
       - name: Upsert Vercel env var for this FE branch (Preview target)
         env:
