@@ -14,6 +14,21 @@ jobs:
     name: Update Vercel Preview for FE branch
     runs-on: ubuntu-latest
     steps:
+      - name: Get Current Deployments for that branch
+        id: get_deployments
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+        run: |
+            # List Deployments API: https://vercel.com/docs/rest-api#endpoints/deployments/list-deployments
+            # Get the latest deployment for that branch (if any)
+            echo "Fetching latest deployment for branch '${{ github.event.inputs.fe_branch }}' in project
+            $HAS_DEPLOYMENT = curl -s "https://api.vercel.com/v6/deployments?projectId=$VERCEL_PROJECT_ID&teamId=$VERCEL_ORG_ID&branch=${{ github.event.inputs.fe_branch }}&limit=1&target=preview" \
+            -H "Authorization: Bearer $VERCEL_TOKEN" | jq '.deployments[] | {url:.url, state:.readyState, id:.id}'
+            echo "Latest deployment: $HAS_DEPLOYMENT"
+            echo "::set-output name=has_deployment::$HAS_DEPLOYMENT"
+
       - name: Upsert Vercel env var for this FE branch (Preview target)
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
