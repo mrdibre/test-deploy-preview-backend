@@ -3,7 +3,7 @@ on:
     inputs:
       fe_branch:
         description: 'The FE branch name to deploy (e.g., pr-123)'
-        default: 'main'
+        default: 'preview'
 
 permissions:
   id-token: write
