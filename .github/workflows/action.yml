@@ -17,8 +17,14 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Install jq
-        run: sudo apt-get update && sudo apt-get install -y jq
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install
 
       - name: Execute Vercel deployment script
         env:
@@ -26,6 +32,4 @@ jobs:
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
           FE_BRANCH: ${{ github.event.inputs.fe_branch }}
-        run: |
-          chmod +x ./vercel.sh
-          ./vercel.sh
+        run: pnpm vercel-deploy
