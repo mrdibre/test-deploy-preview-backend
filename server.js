@@ -8,7 +8,7 @@ fastify.register(require('@fastify/cors'), {
 });
 
 fastify.get('/', async (request, reply) => {
-  return { message: 'Hello World!' };
+  return { message: 'Hello World opa!' };
 });
 
 fastify.get('/healthz', async (request, reply) => {
@@ -19,7 +19,7 @@ const start = async () => {
   try {
     const port = process.env.PORT || 3000;
     const host = process.env.HOST || '0.0.0.0';
-    
+
     await fastify.listen({ port, host });
     console.log(`Server running on http://${host}:${port}`);
   } catch (err) {
